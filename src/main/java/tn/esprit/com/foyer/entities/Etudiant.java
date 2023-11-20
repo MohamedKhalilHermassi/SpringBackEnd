@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table( name = "Etudiant")
+@Table(name = "Etudiant")
 public class Etudiant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +23,15 @@ public class Etudiant implements Serializable {
     private String nomEt;
     private String prenomEt;
     private Long cin;
+    private String email;
     private String ecole;
     @Temporal(TemporalType.DATE)
     private Date dateNaissance;
+
+    private double schoolperformance;
+    private String interests;
+
+
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Reservation> reservations;
 }

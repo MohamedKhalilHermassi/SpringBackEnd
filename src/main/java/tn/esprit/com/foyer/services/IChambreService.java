@@ -14,4 +14,7 @@ public interface IChambreService {
     Chambre retrieveChambre(Long idChambre);
 
     void removeChambre(Long idChambre);
+
+    Chambre affecterReservationAChambre(Long id, String idreserv);
+
 }

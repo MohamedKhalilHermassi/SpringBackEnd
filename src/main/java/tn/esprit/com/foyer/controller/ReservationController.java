@@ -1,10 +1,12 @@
 package tn.esprit.com.foyer.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.com.foyer.entities.Reservation;
 import tn.esprit.com.foyer.services.ReservationServices;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -23,11 +25,20 @@ public class ReservationController {
         return reservationServices.retrieveReservation(reservationId);
     }
 
-    @PostMapping("/add-reservation")
-    public Reservation addReservation(@RequestBody Reservation r){
-        return reservationServices.addReservation(r);
+
+    // PUT
+    @PutMapping("/newreserv/{idetud}/{idchambre}")
+    public Reservation addReservation(@RequestBody Reservation reservation, @PathVariable(name = "idetud") Long idEtudiant , @PathVariable(name = "idchambre") Long idChambre) {
+        return reservationServices.addReservation(reservation, idEtudiant,idChambre);
     }
 
+    @PutMapping("/update")
+    public Reservation updateReservation(@RequestBody Reservation reservation) {
+        return reservationServices.updateReservation(reservation);
+    }
+
+
+    // DELETE
     @DeleteMapping("/delete-reservation/{reservation-id}")
     public void deleteReservation(@PathVariable("reservation-id") Long reservationId){
         reservationServices.removeReservation(reservationId);
