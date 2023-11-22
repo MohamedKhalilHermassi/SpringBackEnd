@@ -3,7 +3,6 @@ package tn.esprit.com.foyer.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import tn.esprit.com.foyer.enums.TypeChambre;
 
 import java.io.Serializable;
 import java.util.Set;
