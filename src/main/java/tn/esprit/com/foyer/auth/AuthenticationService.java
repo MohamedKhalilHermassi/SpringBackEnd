@@ -6,7 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tn.esprit.com.foyer.config.JwtService;
-import tn.esprit.com.foyer.entities.Role;
+import tn.esprit.com.foyer.enums.Role;
 import tn.esprit.com.foyer.entities.User;
 import tn.esprit.com.foyer.repositories.UserRepository;
 
@@ -22,8 +22,11 @@ public class AuthenticationService {
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
+                .cin(request.getCin())
+                .ecole(request.getEcole())
+                .dateNaissance(request.getDateNaissance())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
+                .role(request.getRole())
                 .build();
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);

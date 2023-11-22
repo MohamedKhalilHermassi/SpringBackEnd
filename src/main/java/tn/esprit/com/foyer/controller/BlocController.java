@@ -1,6 +1,7 @@
 package tn.esprit.com.foyer.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.com.foyer.entities.Bloc;
 import tn.esprit.com.foyer.services.BlocServices;
@@ -10,6 +11,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/bloc")
+@PreAuthorize("hasAnyRole('ADMIN','ETUDIANT')")
 public class BlocController {
     BlocServices blocServices;
     @GetMapping("/retrieve-all-bloc")
@@ -22,11 +24,13 @@ public class BlocController {
     }
 
     @PostMapping("/add-bloc")
+    @PreAuthorize("hasAuthority('admin:create')")
     public Bloc addBloc(@RequestBody Bloc bloc){
         return blocServices.addBloc(bloc);
     }
 
     @DeleteMapping("/delete-bloc/{bloc-id}")
+    @PreAuthorize("hasAuthority('admin:delete')")
     public void deleteBloc(@PathVariable("bloc-id") Long blocId){
         blocServices.removeBloc(blocId);
     }

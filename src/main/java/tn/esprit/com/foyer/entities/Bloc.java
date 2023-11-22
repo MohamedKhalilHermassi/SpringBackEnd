@@ -19,7 +19,7 @@ public class Bloc implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idBloc")
-    private Long idFoyer; // Clé primaire
+    private Long idChambre; // Clé primaire
     private String nomBloc;
     private Long capaciteBloc;
     @ManyToOne
