@@ -21,16 +21,18 @@ public class UserController {
         return userServices.retrieveAllUsers();
     }
 
-    @PostMapping("/retrieve-user/{user-id}")
+    @GetMapping("/retrieve-user/{user-id}")
     @PreAuthorize("hasAuthority('admin:create')")
     public User retrieveUser(@PathVariable(name = "user-id") Long userId){
         return userServices.retrieveUser(userId);
     }
 
-    @PutMapping("/update-user")
+
+
+    @PutMapping("/update-user/{user-id}")
     @PreAuthorize("hasAuthority('admin:update')")
-    public User updateUser(@RequestBody User u){
-        return userServices.updateUser(u);
+    public User changeName(@PathVariable("user-id") Long userId, @RequestBody User u){
+        return userServices.updateUser(userId,u);
     }
 
     @DeleteMapping("/delete-user/{user-id}")
