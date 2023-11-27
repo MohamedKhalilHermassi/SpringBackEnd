@@ -19,11 +19,6 @@ public class UserServices implements IUserService{
     }
 
     @Override
-    public User updateUser(User u) {
-        return userRepository.save(u);
-    }
-
-    @Override
     public User retrieveUser(Long id) {
         return userRepository.findById(id).get();
     }
@@ -40,5 +35,15 @@ public class UserServices implements IUserService{
         else {
             return false;
         }
+    }
+    @Override
+    public User updateUser(Long id, User u){
+        User user = userRepository.findById(id).get();
+        user.setFirstname(u.getFirstname());
+        user.setLastname(u.getLastname());
+        user.setEcole(u.getEcole());
+        user.setEmail(u.getEmail());
+        userRepository.save(user);
+        return user;
     }
 }

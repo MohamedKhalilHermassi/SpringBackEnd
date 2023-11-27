@@ -1,7 +1,7 @@
 package tn.esprit.com.foyer.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.com.foyer.entities.Reservation;
 import tn.esprit.com.foyer.services.ReservationServices;
@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/reservation")
+@PreAuthorize("hasAnyRole('ADMIN','ETUDIANT')")
 public class ReservationController {
     ReservationServices reservationServices;
 
@@ -44,6 +45,7 @@ public class ReservationController {
 
     // DELETE
     @DeleteMapping("/delete-reservation/{reservation-id}")
+    @PreAuthorize("hasAuthority('admin:delete')")
     public void deleteReservation(@PathVariable("reservation-id") Long reservationId){
         reservationServices.removeReservation(reservationId);
     }
