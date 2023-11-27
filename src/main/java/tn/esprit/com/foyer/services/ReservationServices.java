@@ -54,6 +54,11 @@ public class ReservationServices implements IReservationService {
     }
 
     @Override
+    public List<Reservation> retrieveReservationbystudent(Long idstudent) {
+        return reservationRepository.findReservationByEtudiant(idstudent);
+    }
+
+    @Override
     public void removeReservation(Long idReservation) {
         reservationRepository.deleteById(idReservation);
     }

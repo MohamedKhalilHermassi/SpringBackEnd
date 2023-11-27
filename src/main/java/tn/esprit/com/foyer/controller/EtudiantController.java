@@ -21,6 +21,12 @@ public class EtudiantController {
     public Etudiant retrieveEtudiant(@PathVariable("etudiant-id") Long etudiantId) {
         return etudiantService.retrieveEtudiant(etudiantId);
     }
+
+    @GetMapping("/match/{etudiant-id}")
+    public Etudiant roommatematcher(@PathVariable("etudiant-id") Long etudiantId) {
+        return etudiantService.RoommateMatcher(etudiantId);
+    }
+
     @PostMapping("/add-etudiant")
     public Etudiant addEtudiant(@RequestBody Etudiant e) {
         return etudiantService.addEtudiant(e);

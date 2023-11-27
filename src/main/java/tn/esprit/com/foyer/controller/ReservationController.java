@@ -25,6 +25,10 @@ public class ReservationController {
         return reservationServices.retrieveReservation(reservationId);
     }
 
+    @GetMapping("/reservationsbystudent/{student-id}")
+    public List<Reservation> retrieveReservationforstudent(@PathVariable("student-id") long studentid){
+        return reservationServices.retrieveReservationbystudent(studentid);
+    }
 
     // PUT
     @PutMapping("/newreserv/{idetud}/{idchambre}")

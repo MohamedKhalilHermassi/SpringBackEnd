@@ -14,5 +14,7 @@ public interface IReservationService {
 
     Reservation retrieveReservation(Long idReservation);
 
+    List<Reservation> retrieveReservationbystudent(Long idstudent);
+
     void removeReservation(Long idReservation);
 }

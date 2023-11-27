@@ -14,5 +14,10 @@ public interface IEtudiantService {
     Etudiant retrieveEtudiant(Long idEtudiant);
 
     void removeEtudiant(Long idEtudiant);
-    List<Etudiant> addEtudiants (List<Etudiant> etudiants);
+
+    List<Etudiant> addEtudiants(List<Etudiant> etudiants);
+
+    public Etudiant RoommateMatcher(long idEtudiant);
+
+
 }
