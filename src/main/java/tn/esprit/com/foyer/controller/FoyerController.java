@@ -7,6 +7,7 @@ import tn.esprit.com.foyer.entities.Foyer;
 import tn.esprit.com.foyer.services.FoyerServices;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -14,6 +15,15 @@ import java.util.List;
 @PreAuthorize("hasAnyRole('ADMIN','ETUDIANT')")
 public class FoyerController {
     FoyerServices foyerServices;
+    @GetMapping("/retrieve-libre-foyer")
+    public List<Foyer> retrieveLibreFoyer(){
+        return foyerServices.retrieveAllFoyers();
+    }
+
+    @GetMapping("/get-foyer-by-capacite")
+    public Map<String,Long> getFoyerByCapacite(){
+        return foyerServices.getCapaciteParFoyer();
+    }
 
     @GetMapping("/retrieve-all-foyer")
     public List<Foyer> retrieveAllFoyer(){
@@ -23,6 +33,13 @@ public class FoyerController {
     @GetMapping("/retrieve-foyer/{foyer-id}")
     public Foyer retrieveFoyer(@PathVariable("foyer-id") Long foyerId){
         return foyerServices.retrieveFoyer(foyerId);
+    }
+
+    @PutMapping("/update-foyer/{id}")
+    @PreAuthorize("hasAuthority('admin:update')")
+    public Foyer updateFoyer(@RequestBody Foyer f, @PathVariable("id") Long id){
+
+        return foyerServices.updateFoyer(f,id);
     }
 
     @PostMapping("/add-foyer")

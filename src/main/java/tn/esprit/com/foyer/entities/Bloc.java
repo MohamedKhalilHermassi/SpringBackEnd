@@ -3,6 +3,7 @@ package tn.esprit.com.foyer.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.engine.internal.Cascade;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -22,7 +23,7 @@ public class Bloc implements Serializable {
     private Long idChambre; // Clé primaire
     private String nomBloc;
     private Long capaciteBloc;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     Foyer foyer;
     @OneToMany(cascade = CascadeType.ALL, mappedBy="bloc")
     private Set<Chambre> chambres;

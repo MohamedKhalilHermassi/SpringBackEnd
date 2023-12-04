@@ -25,6 +25,6 @@ public class Foyer implements Serializable {
 
     @Column(columnDefinition = "boolean default false")
     private boolean archived;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="foyer")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="foyer", fetch = FetchType.EAGER)
     private Set<Bloc> bloc;
 }
