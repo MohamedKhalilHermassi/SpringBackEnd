@@ -23,7 +23,7 @@ public class Chambre implements Serializable {
     @Enumerated(EnumType.STRING)
     private TypeChambre typeC;
     @ManyToOne
-    Bloc bloc;
-    @OneToMany(cascade = CascadeType.ALL)
+    private Bloc bloc;
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "chambre")
     private Set<Reservation> reservations;
 }

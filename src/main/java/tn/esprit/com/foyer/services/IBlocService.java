@@ -1,5 +1,6 @@
 package tn.esprit.com.foyer.services;
 
+import tn.esprit.com.foyer.dto.blocDTO;
 import tn.esprit.com.foyer.entities.Bloc;
 import tn.esprit.com.foyer.entities.Etudiant;
 
@@ -10,9 +11,9 @@ public interface IBlocService {
 
     Bloc addBloc(Bloc b);
 
-    Bloc updateBloc(Bloc b);
+    blocDTO updateBloc(Long idBloc, Bloc b);
 
-    Bloc retrieveBloc(Long idBloc);
+    blocDTO retrieveBloc(Long idBloc);
 
     void removeBloc(Long idBloc);
 }
