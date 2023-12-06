@@ -1,5 +1,6 @@
 package tn.esprit.com.foyer.services;
 
+import tn.esprit.com.foyer.dto.chambreDTO;
 import tn.esprit.com.foyer.entities.Chambre;
 
 import java.util.List;
@@ -9,9 +10,9 @@ public interface IChambreService {
 
     Chambre addChambre(Chambre c);
 
-    Chambre updateChambre(Chambre c);
+    chambreDTO updateChambre(Long id ,Chambre c);
 
-    Chambre retrieveChambre(Long idChambre);
+    chambreDTO retrieveChambre(Long idChambre);
 
     void removeChambre(Long idChambre);
 }

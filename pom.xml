@@ -66,6 +66,11 @@
             <artifactId>twilio</artifactId>
             <version>8.22.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.24</version> <!-- Replace with the latest version -->
+        </dependency>
     </dependencies>
 
     <build>

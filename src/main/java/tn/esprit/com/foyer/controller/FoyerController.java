@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.com.foyer.entities.Foyer;
+import tn.esprit.com.foyer.repositories.FoyerRepository;
 import tn.esprit.com.foyer.services.FoyerServices;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -15,6 +17,12 @@ import java.util.Map;
 @PreAuthorize("hasAnyRole('ADMIN','ETUDIANT')")
 public class FoyerController {
     FoyerServices foyerServices;
+    FoyerRepository foyerRepository ;
+    @GetMapping("/ids")
+    public List<String> getAllFoyerIds() {
+        List<Foyer> foyers = foyerRepository.findAll();
+        return foyers.stream().map(Foyer::getNomFoyer).collect(Collectors.toList());
+    }
     @GetMapping("/retrieve-libre-foyer")
     public List<Foyer> retrieveLibreFoyer(){
         return foyerServices.retrieveAllFoyers();
