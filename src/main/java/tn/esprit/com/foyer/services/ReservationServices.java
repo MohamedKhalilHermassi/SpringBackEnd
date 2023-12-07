@@ -35,7 +35,7 @@ public class ReservationServices implements IReservationService {
 
             Reservation savedReservation = reservationRepository.save(reservation);
             chambreService.affecterReservationAChambre(idChambre,reservation.getIdReservation());
-            // Send email after successfully saving the reservation
+            // Sending email after successfully saving the reservation
             emailService.sendReservationConfirmationEmail(etudiant, savedReservation);
             return savedReservation;
         } else {

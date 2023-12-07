@@ -24,6 +24,11 @@ public class EtudiantController {
         return etudiantService.retrieveEtudiant(etudiantId);
     }
 
+    @PostMapping("/update")
+    public Etudiant updateEtudiant(@RequestBody Etudiant etudiant) {
+        return etudiantService.updateEtudiant(etudiant);
+    }
+
     @GetMapping("/match/{etudiant-id}")
     public Etudiant roommatematcher(@PathVariable("etudiant-id") Long etudiantId) {
         return etudiantService.RoommateMatcher(etudiantId);
