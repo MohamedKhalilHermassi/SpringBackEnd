@@ -19,13 +19,12 @@ import java.util.Set;
 public class Reservation implements Serializable {
     @Id
     @Column(name = "idReservation", length = 50)
-    private String idReservation; // Clé primaire
+    private String idReservation;
     private Date anneeReservation;
     private boolean estValide;
     @ManyToOne
     private Chambre chambre ;
     @ManyToMany(mappedBy="reservations", cascade = CascadeType.ALL)
     private Set<Etudiant> etudiants;
-    @JsonIgnore
 
 }
