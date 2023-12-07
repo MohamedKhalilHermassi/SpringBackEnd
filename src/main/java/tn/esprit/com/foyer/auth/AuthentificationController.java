@@ -52,9 +52,9 @@ public class AuthentificationController {
         return userServices.verifCode(sentCode, request.getEmail());
     }
 
-    @PutMapping("/change-password")
+    @PutMapping("/reset-password")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request){
-        userServices.changePassword(request);
+        userServices.forgotPassword(request);
         return ResponseEntity.ok().build();
     }
 }

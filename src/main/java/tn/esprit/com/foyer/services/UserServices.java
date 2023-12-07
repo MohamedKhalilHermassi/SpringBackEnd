@@ -87,4 +87,15 @@ public class UserServices implements IUserService{
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
     }
+    public void forgotPassword(ChangePasswordRequest request) {
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        if(passwordEncoder.matches(request.getNewPassword(), user.getPassword())){
+            throw new IllegalStateException("Wrong Exception");
+        }
+        if(!request.getNewPassword().equals(request.getConfirmationPassword())){
+            throw new IllegalStateException("Password are not the same");
+        }
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+    }
 }
