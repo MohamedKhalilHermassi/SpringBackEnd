@@ -15,7 +15,14 @@ import java.util.List;
 public class UniversiteServices implements IUniversiteService{
     UniversteRepository universteRepository;
     FoyerRepository foyerRepository;
+    public Universite updateUniversite(Universite u, Long id)
+    {
+        Universite universite = universteRepository.findById(id).get();
+        universite.setNomUniversite(u.getNomUniversite());
+        universite.setAdresse(u.getAdresse());
 
+        return universteRepository.save(universite);
+    }
     @Override
     public List<Universite> retrieveAllUniversities() {
         return universteRepository.findAll();
@@ -58,6 +65,12 @@ public class UniversiteServices implements IUniversiteService{
         u.setFoyer(null);
         universteRepository.save(u);
         return u;
+
+    }
+
+    public Universite findUniversiteById(Long id)
+    {
+        return universteRepository.findById(id).get();
 
     }
 }

@@ -22,12 +22,10 @@ public class Reservation implements Serializable {
     private String idReservation; // Clé primaire
     private Date anneeReservation;
     private boolean estValide;
-
-
+    @ManyToOne
+    private Chambre chambre ;
     @ManyToMany(mappedBy="reservations", cascade = CascadeType.ALL)
     private Set<Etudiant> etudiants;
     @JsonIgnore
-    @ManyToOne()
-    Chambre chambre;
 
 }

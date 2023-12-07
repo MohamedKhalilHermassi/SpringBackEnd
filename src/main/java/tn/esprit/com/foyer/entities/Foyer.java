@@ -1,5 +1,6 @@
 package tn.esprit.com.foyer.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -26,7 +27,7 @@ public class Foyer implements Serializable {
     @Column(columnDefinition = "boolean default false")
     private boolean archived;
 
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="foyer")
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER, mappedBy="foyer")
+    @JsonIgnore
     private Set<Bloc> bloc;
 }
