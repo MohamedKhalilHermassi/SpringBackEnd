@@ -34,6 +34,7 @@ public class ReservationController {
     // PUT
     @PutMapping("/newreserv/{idetud}/{idchambre}")
     public Reservation addReservation(@RequestBody Reservation reservation, @PathVariable(name = "idetud") Long idEtudiant , @PathVariable(name = "idchambre") Long idChambre) {
+        reservation.setEstValide(false);
         return reservationServices.addReservation(reservation, idEtudiant,idChambre);
     }
 

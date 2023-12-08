@@ -248,9 +248,10 @@ public class ChambreServices implements IChambreService {
     }
 
     @Override
-    public Chambre affecterReservationAChambre(Long id, String idreserv) {
+    public Chambre affecterReservationAChambre(Long id, long idreserv) {
         Chambre chambre = chambreRepository.findById(id).get();
         Reservation reservation = reservationRepository.findReservationByIdReservation(idreserv);
+        chambre.getReservations().add(reservation);
         return (chambreRepository.save(chambre));
     }
 }

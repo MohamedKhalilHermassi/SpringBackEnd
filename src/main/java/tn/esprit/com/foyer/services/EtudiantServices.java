@@ -31,7 +31,7 @@ public class EtudiantServices implements IEtudiantService {
 
     @Override
     public Etudiant updateEtudiant(Etudiant e) {
-        if (e.getInterests()=="") e.setInterests(null);
+        if (e.getInterests().trim()=="") e.setInterests(null);
         return etudiantRepository.save(e);
     }
 

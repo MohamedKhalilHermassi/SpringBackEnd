@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.com.foyer.entities.Etudiant;
 import tn.esprit.com.foyer.entities.Reservation;
+import tn.esprit.com.foyer.repositories.ChambreRepository;
 import tn.esprit.com.foyer.repositories.EtudiantRepository;
 import tn.esprit.com.foyer.repositories.ReservationRepository;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -16,6 +18,7 @@ import java.util.Set;
 public class ReservationServices implements IReservationService {
     ReservationRepository reservationRepository;
     EtudiantRepository etudiantRepository;
+    ChambreRepository chambreRepository;
     ChambreServices chambreService;
     EmailService emailService;
 
@@ -29,14 +32,17 @@ public class ReservationServices implements IReservationService {
         Etudiant etudiant = etudiantRepository.findById(idEtudiant).orElse(null);
         if (etudiant != null) {
             Set<Reservation> newReservations = etudiant.getReservations();
-            newReservations.add(reservation);
-            etudiant.setReservations(newReservations);
-            etudiantRepository.save(etudiant);
-
+            reservation.setChambre(chambreRepository.findById(idChambre).get());
+            Set<Etudiant> newStudents = reservation.getEtudiants();
+            if (newStudents == null) {
+                newStudents = new HashSet<>();
+            }
+            newStudents.add(etudiant);
+            reservation.setEtudiants(newStudents);
             Reservation savedReservation = reservationRepository.save(reservation);
-            chambreService.affecterReservationAChambre(idChambre,reservation.getIdReservation());
+            //chambreService.affecterReservationAChambre(idChambre,reservation.getIdReservation());
             // Sending email after successfully saving the reservation
-            emailService.sendReservationConfirmationEmail(etudiant, savedReservation);
+            //emailService.sendReservationConfirmationEmail(etudiant, savedReservation);
             return savedReservation;
         } else {
             return null;

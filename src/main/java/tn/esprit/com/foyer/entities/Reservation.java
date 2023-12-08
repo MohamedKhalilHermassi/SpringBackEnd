@@ -15,16 +15,18 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table( name = "Reservation")
+@Table(name = "Reservation")
 public class Reservation implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idReservation", length = 50)
-    private String idReservation;
+    private long idReservation;
+    @Temporal(TemporalType.DATE)
     private Date anneeReservation;
     private boolean estValide;
-    @ManyToOne
-    private Chambre chambre ;
-    @ManyToMany(mappedBy="reservations", cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Chambre chambre;
+    @ManyToMany(cascade = CascadeType.ALL)
     private Set<Etudiant> etudiants;
 
 }

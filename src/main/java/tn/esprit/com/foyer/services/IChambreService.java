@@ -16,6 +16,6 @@ public interface IChambreService {
 
     void removeChambre(Long idChambre);
 
-    Chambre affecterReservationAChambre(Long id, String idreserv);
+    Chambre affecterReservationAChambre(Long id, long idreserv);
 
 }
