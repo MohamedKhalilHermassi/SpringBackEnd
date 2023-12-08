@@ -22,12 +22,15 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static tn.esprit.com.foyer.entities.TypeChambre.*;
+
 @Service
 @AllArgsConstructor
 public class ChambreServices implements IChambreService{
     ChambreRepository chambreRepository;
     BlocRepository blocRepository;
     ReservationRepository reservationRepository ;
+    private EmailService emailService;
 
 
     public Map<String, Map<String, Long>> getStatistiquesTypesChambresParBloc() {
@@ -44,16 +47,40 @@ public class ChambreServices implements IChambreService{
     }
 
     public Chambre affecterBlocToChambre(Long numeroChambre, Long idBloc) {
+
+
+        int affectedChambresCount = chambreRepository.countByBloc_IdBloc(idBloc);
         Chambre chambre = chambreRepository.findByNumeroChambre(numeroChambre);
-        if (chambre == null) {
-            throw new EntityNotFoundException("chambre not found");
+        Bloc bloc = blocRepository.findById(idBloc)
+                .orElseThrow(() -> new EntityNotFoundException("Bloc not found"));
+        if (affectedChambresCount  < bloc.getCapaciteBloc()) {
+
+            if (chambre == null) {
+                throw new EntityNotFoundException("Chambre not found");
+            }
+
+            chambre.setBloc(bloc);
+            return chambreRepository.save(chambre);
+        }
+        else {
+            emailService.sendEmail("mojece4695@hupoi.com", "Cannot assign more chambres, capaciteBloc exceeded", "email-template");
+             chambreRepository.delete(chambre);
+            throw new IllegalStateException("Cannot assign more chambres, capaciteBloc exceeded");
+
         }
 
-        Bloc bloc = blocRepository.findById(idBloc).orElseThrow(() -> new EntityNotFoundException("Bloc not found"));
 
-        chambre.setBloc(bloc);
-        return chambreRepository.save(chambre);
     }
+    public int actualchambrenumbersnow (Long idBloc)
+    {
+
+
+
+
+        return chambreRepository.countByBloc_IdBloc(idBloc);
+    }
+
+
 
 
     public List<chambreDTO> getChambresBy_BlocId(Long blocId) {
