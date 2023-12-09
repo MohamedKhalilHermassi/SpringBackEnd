@@ -24,6 +24,6 @@ public interface ChambreRepository extends JpaRepository<Chambre,Long> {
     @Query("SELECT c.bloc.nomBloc, c.typeC, COUNT(c) FROM Chambre c GROUP BY c.bloc.nomBloc, c.typeC")
     List<Object[]> countChambresByTypeAndBloc();
 
-
+    boolean existsByNumeroChambre(Long numeroChambre);
 
 }

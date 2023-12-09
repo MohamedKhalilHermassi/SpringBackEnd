@@ -53,7 +53,8 @@ public class ChambreServices implements IChambreService{
         Chambre chambre = chambreRepository.findByNumeroChambre(numeroChambre);
         Bloc bloc = blocRepository.findById(idBloc)
                 .orElseThrow(() -> new EntityNotFoundException("Bloc not found"));
-        if (affectedChambresCount  < bloc.getCapaciteBloc()) {
+
+        if (affectedChambresCount  < bloc.getCapaciteBloc() ) {
 
             if (chambre == null) {
                 throw new EntityNotFoundException("Chambre not found");
@@ -63,14 +64,20 @@ public class ChambreServices implements IChambreService{
             return chambreRepository.save(chambre);
         }
         else {
-            emailService.sendEmail("mojece4695@hupoi.com", "Cannot assign more chambres, capaciteBloc exceeded", "email-template");
-             chambreRepository.delete(chambre);
+            emailService.sendEmail("mojece4695@hupoi.com",
+                    "Cannot assign more chambres to " + bloc.getNomBloc() + ", capaciteBloc exceeded",
+                    "choisir une autre bloc pour ce numeroChambre");
+
+
+            chambreRepository.delete(chambre);
             throw new IllegalStateException("Cannot assign more chambres, capaciteBloc exceeded");
 
         }
 
 
     }
+
+
     public int actualchambrenumbersnow (Long idBloc)
     {
 
@@ -115,9 +122,15 @@ public class ChambreServices implements IChambreService{
 
         return  chambreRepository.findAll() ;
     }
-
+    public boolean isNumeroChambreExists(Long numeroChambre) {
+        return chambreRepository.existsByNumeroChambre(numeroChambre);
+    }
     @Override
     public Chambre addChambre(Chambre c) {
+        Long numeroChambre = c.getNumeroChambre();
+        if (isNumeroChambreExists(numeroChambre)) {
+            throw new IllegalArgumentException("Chambre with numeroChambre " + numeroChambre + " already exists");
+        }
         return chambreRepository.save(c);
     }
 
@@ -195,7 +208,6 @@ public class ChambreServices implements IChambreService{
                 document.addPage(page);
                 PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true);
 
-                // Write Bloc information
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
                 contentStream.beginText();
                 contentStream.newLineAtOffset(50, 750);
@@ -203,7 +215,6 @@ public class ChambreServices implements IChambreService{
                 contentStream.newLineAtOffset(0, -20);
                 contentStream.setFont(PDType1Font.HELVETICA, 12);
 
-                // Display Bloc Name
                 contentStream.showText("Name:");
                 contentStream.newLine();
                 contentStream.newLineAtOffset(0, -20);
@@ -211,7 +222,6 @@ public class ChambreServices implements IChambreService{
                 contentStream.newLineAtOffset(0, -40);
                 contentStream.newLine();
 
-                // Display Bloc Capacity
                 contentStream.newLineAtOffset(0, -20);
                 contentStream.showText("Capacity:");
                 contentStream.newLineAtOffset(0, -20);
@@ -221,7 +231,6 @@ public class ChambreServices implements IChambreService{
                 contentStream.newLine();
                 contentStream.endText();
 
-                // Write Chambre information
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
                 contentStream.beginText();
                 contentStream.newLineAtOffset(50, 620);
@@ -230,7 +239,7 @@ public class ChambreServices implements IChambreService{
                 contentStream.newLineAtOffset(0, -20);
                 contentStream.setFont(PDType1Font.HELVETICA, 10);
 
-                // Display Chambre Information
+
                 Set<Chambre> chambres = bloc.getChambres();
                 boolean chambreExists = false;
                 int yOffset = 0;
@@ -246,7 +255,7 @@ public class ChambreServices implements IChambreService{
                     contentStream.showText(String.valueOf(chambre.getTypeC()));
                     contentStream.newLineAtOffset(0, -25);
                     yOffset += 30;
-                    if (yOffset >= 650) { // If next chambre doesn't fit on the page, add a new page
+                    if (yOffset >= 650) {
                         page = new PDPage(PDRectangle.A4);
                         document.addPage(page);
                         contentStream.close();
@@ -269,7 +278,7 @@ public class ChambreServices implements IChambreService{
                 contentStream.endText();
                 contentStream.close();
             }
-            document.save(baos); // Save PDF content to the ByteArrayOutputStream
+            document.save(baos);
         } catch (IOException e) {
             e.printStackTrace();
         }
