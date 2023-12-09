@@ -1,8 +1,10 @@
 package tn.esprit.com.foyer.services;
 
 import tn.esprit.com.foyer.entities.Etudiant;
+import tn.esprit.com.foyer.entities.Reservation;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IEtudiantService {
     List<Etudiant> retrieveAllEtudiants();
@@ -17,7 +19,6 @@ public interface IEtudiantService {
 
     List<Etudiant> addEtudiants(List<Etudiant> etudiants);
 
-    public Etudiant RoommateMatcher(long idEtudiant);
-
+    public Map<String, Object> RoommateMatcher(long idEtudiant);
 
 }

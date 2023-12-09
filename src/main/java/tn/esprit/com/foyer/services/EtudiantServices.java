@@ -5,12 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.com.foyer.entities.Etudiant;
+import tn.esprit.com.foyer.entities.Reservation;
 import tn.esprit.com.foyer.repositories.EtudiantRepository;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -18,6 +16,7 @@ import java.util.Set;
 public class EtudiantServices implements IEtudiantService {
 
     EtudiantRepository etudiantRepository;
+    EmailService emailService;
 
     @Override
     public List<Etudiant> retrieveAllEtudiants() {
@@ -31,7 +30,7 @@ public class EtudiantServices implements IEtudiantService {
 
     @Override
     public Etudiant updateEtudiant(Etudiant e) {
-        if (e.getInterests().trim()=="") e.setInterests(null);
+        if (e.getInterests().trim() == "") e.setInterests(null);
         return etudiantRepository.save(e);
     }
 
@@ -52,31 +51,19 @@ public class EtudiantServices implements IEtudiantService {
     }
 
 
-    public double getRoommateMatchingScore(Etudiant student1, Etudiant student2) {
-        double jaccardSimilarity = calculateJaccardSimilarity(
-                student1.getInterests(),
-                student2.getInterests()
-        );
-
-        log.info("Jaccard Similarity: " + jaccardSimilarity);
-
+    public double getRoommateMatchingScore(double schoolMatch, double performanceMatch, double InterestsjaccardSimilarity) {
         double weightSchool = 0.45;
         double weightPerformance = 0.15;
         double weightInterests = 0.4;
 
-        double schoolMatch = (student1.getEcole().equals(student2.getEcole())) ? 1.0 : 0.0;
-        double performanceMatch = 1.0 - Math.abs(student1.getSchoolperformance() - student2.getSchoolperformance());
-
         return (weightSchool * schoolMatch) + (weightPerformance * performanceMatch)
-                + (weightInterests * jaccardSimilarity);
+                + (weightInterests * InterestsjaccardSimilarity);
     }
+
     public double calculateJaccardSimilarity(String interests1, String interests2) {
         Set<String> set1 = splitInterests(interests1);
         Set<String> set2 = splitInterests(interests2);
-
-        Set<String> intersection = new HashSet<>(set1);
-        intersection.retainAll(set2);
-
+        Set<String> intersection = similarinterests(set1, set2);
         Set<String> union = new HashSet<>(set1);
         union.addAll(set2);
 
@@ -86,25 +73,49 @@ public class EtudiantServices implements IEtudiantService {
 
         return (double) intersection.size() / union.size();
     }
-    private Set<String> splitInterests(String interests) {
+
+    public Set<String> similarinterests(Set<String> set1, Set<String> set2) {
+        Set<String> intersection = new HashSet<>(set1);
+        intersection.retainAll(set2);
+        return intersection;
+    }
+
+    public Set<String> splitInterests(String interests) {
         return new HashSet<>(Arrays.asList(interests.split(",")));
     }
+
     @Override
-    public Etudiant RoommateMatcher(long idEtudiant) {
+    public Map<String, Object> RoommateMatcher(long idEtudiant) {
         Etudiant student = retrieveEtudiant(idEtudiant);
         List<Etudiant> students = retrieveAllEtudiants();
-        students.removeIf(etudiant -> etudiant.getIdEtudiant() == idEtudiant);
+        students.removeIf(etudiant -> etudiant == student);
 
+        double[] beststudentscores = {0.0, 0.0, 0.0};
         double x = 0.0;
         Etudiant beststudent = null;
         for (Etudiant student2 : students) {
-            double y = getRoommateMatchingScore(student, student2);
+            double InterestsjaccardSimilarity = calculateJaccardSimilarity(
+                    student.getInterests(),
+                    student2.getInterests()
+            );
+            log.info("Interests Jaccard Similarity : " + InterestsjaccardSimilarity);
+
+            double schoolMatch = (student.getEcole().equals(student2.getEcole())) ? 1.0 : 0.0;
+            double performanceMatch = 1.0 - Math.abs(student.getSchoolperformance() - student2.getSchoolperformance()) / 20;
+            double y = getRoommateMatchingScore(schoolMatch, performanceMatch, InterestsjaccardSimilarity);
             if (y > x) {
                 x = y;
                 beststudent = student2;
+                beststudentscores[0] = schoolMatch;
+                beststudentscores[1] = InterestsjaccardSimilarity;
+                beststudentscores[2] = performanceMatch;
             }
         }
-        return (x > 0) ? beststudent : null;
-    }
+        log.info("Best Matching score was : " + x);
 
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("etudiant", beststudent);
+        resultMap.put("matchingScores", beststudentscores);
+        return (x > 0) ? resultMap : null;
+    }
 }

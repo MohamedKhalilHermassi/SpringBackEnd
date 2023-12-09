@@ -22,7 +22,7 @@ public class Etudiant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idEtudiant")
-    private Long idEtudiant; // Clé primaire
+    private Long idEtudiant;
     private String nomEt;
     private String prenomEt;
     private Long cin;
@@ -32,6 +32,7 @@ public class Etudiant implements Serializable {
     private Date dateNaissance;
     private double schoolperformance;
     private String interests;
+    private String code = null;
 
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "etudiants", fetch = FetchType.EAGER)
