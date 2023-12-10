@@ -30,7 +30,7 @@ public class ChambreServices implements IChambreService {
     ChambreRepository chambreRepository;
     BlocRepository blocRepository;
     ReservationRepository reservationRepository;
-    private EmailService emailService;
+    private EmailBlocService emailService;
 
 
     public Map<String, Map<String, Long>> getStatistiquesTypesChambresParBloc() {
