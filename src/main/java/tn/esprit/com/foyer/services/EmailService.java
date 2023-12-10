@@ -3,15 +3,12 @@ package tn.esprit.com.foyer.services;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
-
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
-
-
-import javax.naming.Context;
+import org.thymeleaf.context.Context;
 
 @Service
 @AllArgsConstructor
@@ -27,20 +24,18 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public void sendEmail(String to, String subject) {
+    public void sendEmailWithHtmlTemplate(String to, String subject, String templateName, Context context) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
 
         try {
             helper.setTo(to);
             helper.setSubject(subject);
-
-
+            String htmlContent = templateEngine.process(templateName, context);
+            helper.setText(htmlContent, true);
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
-
+            // Handle exception
         }
     }
-
-
 }

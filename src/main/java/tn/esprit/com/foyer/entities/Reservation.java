@@ -24,5 +24,5 @@ public class Reservation implements Serializable {
     @ManyToOne
     private Chambre chambre ;
     @ManyToMany(mappedBy="reservations", cascade = CascadeType.ALL)
-    private Set<Etudiant> etudiants;
+    private Set<User> users;
 }
