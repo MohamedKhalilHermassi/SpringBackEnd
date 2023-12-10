@@ -10,6 +10,10 @@ import java.util.List;
 
 @Repository
 public interface ChambreRepository extends JpaRepository<Chambre,Long> {
+
+    int countByBloc_IdBloc(Long blocId);
+
+
     List<Chambre> getChambresByBloc_IdBloc(Long blocId);
 
     @Query("SELECT c FROM Chambre c LEFT JOIN FETCH c.bloc WHERE c.idChambre = :id")
@@ -19,4 +23,7 @@ public interface ChambreRepository extends JpaRepository<Chambre,Long> {
 
     @Query("SELECT c.bloc.nomBloc, c.typeC, COUNT(c) FROM Chambre c GROUP BY c.bloc.nomBloc, c.typeC")
     List<Object[]> countChambresByTypeAndBloc();
+
+    boolean existsByNumeroChambre(Long numeroChambre);
+
 }

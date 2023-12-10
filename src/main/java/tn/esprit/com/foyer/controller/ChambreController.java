@@ -24,6 +24,12 @@ public class ChambreController {
 
     ChambreServices chambreServices;
     BlocServices    blocServices;
+
+    @GetMapping("/nombrechambresparbloc/{blocId}")
+    public ResponseEntity<Integer> getActualChambreNumbers(@PathVariable Long blocId) {
+        int actualChambreNumbers = chambreServices.actualchambrenumbersnow( blocId);
+        return ResponseEntity.ok(actualChambreNumbers);
+    }
     @GetMapping("/get-all-chambres")
 
     public List<Chambre> retrieveChambres(){
@@ -90,6 +96,7 @@ public class ChambreController {
                 .contentLength(pdfBytes.length)
                 .body(pdfBytes);
     }
+
 
 
 }

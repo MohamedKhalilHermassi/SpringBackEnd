@@ -11,4 +11,5 @@ public interface BlocRepository extends JpaRepository<Bloc,Long> {
 
 
     public Bloc findByNomBloc(String nom);
+    Boolean existsByNomBloc(String nomBloc) ;
 }
