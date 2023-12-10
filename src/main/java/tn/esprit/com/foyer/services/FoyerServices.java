@@ -76,7 +76,7 @@ public class FoyerServices implements IFoyerService{
                     if((y-x)<10)
                     {
                        log.info("le foyer "+foyer.getNomFoyer()+" est presque saturé");
-                        serviceSMS.sendSms("+21629188594","le foyer "+foyer.getNomFoyer()+" est presque saturé");
+                        //serviceSMS.sendSms("+21629188594","le foyer "+foyer.getNomFoyer()+" est presque saturé");
                     }
 
                 }

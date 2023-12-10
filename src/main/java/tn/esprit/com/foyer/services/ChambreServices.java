@@ -26,10 +26,10 @@ import static tn.esprit.com.foyer.entities.TypeChambre.*;
 
 @Service
 @AllArgsConstructor
-public class ChambreServices implements IChambreService{
+public class ChambreServices implements IChambreService {
     ChambreRepository chambreRepository;
     BlocRepository blocRepository;
-    ReservationRepository reservationRepository ;
+    ReservationRepository reservationRepository;
     private EmailService emailService;
 
 
@@ -54,7 +54,7 @@ public class ChambreServices implements IChambreService{
         Bloc bloc = blocRepository.findById(idBloc)
                 .orElseThrow(() -> new EntityNotFoundException("Bloc not found"));
 
-        if (affectedChambresCount  < bloc.getCapaciteBloc() ) {
+        if (affectedChambresCount < bloc.getCapaciteBloc()) {
 
             if (chambre == null) {
                 throw new EntityNotFoundException("Chambre not found");
@@ -62,9 +62,8 @@ public class ChambreServices implements IChambreService{
 
             chambre.setBloc(bloc);
             return chambreRepository.save(chambre);
-        }
-        else {
-            emailService.sendEmail("mojece4695@hupoi.com",
+        } else {
+            emailService.sendEmail("figawew503@newcupon.com",
                     "Cannot assign more chambres to " + bloc.getNomBloc() + ", capaciteBloc exceeded",
                     "choisir une autre bloc pour ce numeroChambre");
 
@@ -76,6 +75,7 @@ public class ChambreServices implements IChambreService{
 
 
     }
+
 
 
     public int actualchambrenumbersnow (Long idBloc)
