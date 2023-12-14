@@ -2,10 +2,8 @@ package tn.esprit.com.foyer.services;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.com.foyer.entities.Etudiant;
-import tn.esprit.com.foyer.entities.Reservation;
 import tn.esprit.com.foyer.repositories.EtudiantRepository;
 
 import java.util.*;
@@ -16,7 +14,7 @@ import java.util.*;
 public class EtudiantServices implements IEtudiantService {
 
     EtudiantRepository etudiantRepository;
-    EmailService emailService;
+    EmailReservationService emailReservationService;
 
     @Override
     public List<Etudiant> retrieveAllEtudiants() {

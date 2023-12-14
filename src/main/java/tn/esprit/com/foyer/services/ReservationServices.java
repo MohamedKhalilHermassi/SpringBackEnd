@@ -2,8 +2,6 @@ package tn.esprit.com.foyer.services;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.apache.commons.lang3.RandomStringUtils;
 import tn.esprit.com.foyer.entities.Chambre;
@@ -13,7 +11,6 @@ import tn.esprit.com.foyer.repositories.ChambreRepository;
 import tn.esprit.com.foyer.repositories.EtudiantRepository;
 import tn.esprit.com.foyer.repositories.ReservationRepository;
 
-import java.time.Year;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -28,7 +25,7 @@ public class ReservationServices implements IReservationService {
     ChambreRepository chambreRepository;
     ChambreServices chambreService;
     EtudiantServices etudiantServices;
-    EmailService emailService;
+    EmailReservationService emailReservationService;
 
     @Override
     public List<Reservation> retrieveAllReservation() {
@@ -52,7 +49,7 @@ public class ReservationServices implements IReservationService {
                 reservation.setEtudiants(newStudents);
                 Reservation savedReservation = reservationRepository.save(reservation);
                 // Sending email after successfully saving the reservation
-                emailService.sendReservationConfirmationEmail(etudiant, savedReservation);
+                emailReservationService.sendReservationConfirmationEmail(etudiant, savedReservation);
                 // Sending email to matched student if send
                 if (send) sendemailtomatch(idmatched, etudiant, reservation, matchingscores);
 
@@ -88,7 +85,7 @@ public class ReservationServices implements IReservationService {
     public void sendemailtomatch(long idmatched, Etudiant student, Reservation reservation, double[] matchingscores) {
         Etudiant tocontact = etudiantRepository.findById(idmatched).get();
         // Sending email after successfully saving the reservation
-        emailService.sendemailtomatch(tocontact, student, reservation, matchingscores, etudiantServices);
+        emailReservationService.sendemailtomatch(tocontact, student, reservation, matchingscores, etudiantServices);
     }
 
 

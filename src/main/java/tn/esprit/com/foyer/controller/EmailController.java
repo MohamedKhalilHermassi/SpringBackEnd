@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.thymeleaf.context.Context;
 import tn.esprit.com.foyer.dto.MailRequest;
+import tn.esprit.com.foyer.services.EmailReservationService;
 import tn.esprit.com.foyer.services.EmailService;
 
 @RestController
