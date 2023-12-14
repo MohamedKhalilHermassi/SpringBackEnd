@@ -56,9 +56,15 @@ public class BlocServices implements IBlocService{
 
 
     }
-
+    public boolean isNomBlocExists(String nomBloc) {
+        return blocRepository.existsByNomBloc(nomBloc);
+    }
     @Override
     public Bloc addBloc(Bloc b) {
+        String nomBloc = b.getNomBloc();
+        if (isNomBlocExists(nomBloc)) {
+            throw new IllegalArgumentException("Bloc with nomBloc " + nomBloc + " already exists");
+        }
         return blocRepository.save(b);
     }
 

@@ -11,6 +11,7 @@ import tn.esprit.com.foyer.enums.Role;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -34,6 +35,9 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private String code;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<Reservation> reservations;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

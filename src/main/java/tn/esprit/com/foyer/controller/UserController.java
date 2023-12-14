@@ -1,8 +1,10 @@
 package tn.esprit.com.foyer.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.com.foyer.dto.GenerateCodeRequest;
 import tn.esprit.com.foyer.entities.User;
 import tn.esprit.com.foyer.services.UserServices;
 
@@ -31,7 +33,7 @@ public class UserController {
 
     @PutMapping("/update-user/{user-id}")
     @PreAuthorize("hasAuthority('admin:update')")
-    public User changeName(@PathVariable("user-id") Long userId, @RequestBody User u){
+    public User update(@PathVariable("user-id") Long userId, @RequestBody User u){
         return userServices.updateUser(userId,u);
     }
 
@@ -40,4 +42,7 @@ public class UserController {
     public void deleteUser(@PathVariable(name = "user-id") Long userId){
         userServices.deleteUser(userId);
     }
+
+
+
 }
