@@ -110,10 +110,14 @@ public class EtudiantServices implements IEtudiantService {
             }
         }
         log.info("Best Matching score was : " + x);
+        Set<String> set1 = splitInterests(student.getInterests());
+        Set<String> set2 = splitInterests(beststudent.getInterests());
+        Set<String> similarinterests = similarinterests(set1, set2);
 
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("etudiant", beststudent);
         resultMap.put("matchingScores", beststudentscores);
+        resultMap.put("similarinterests", similarinterests);
         return (x > 0) ? resultMap : null;
     }
 }

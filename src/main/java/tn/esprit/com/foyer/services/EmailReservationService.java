@@ -8,6 +8,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import tn.esprit.com.foyer.entities.*;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -58,15 +59,15 @@ public class EmailReservationService implements iEmailService {
     }
 
     @Override
-    public void sendemailtomatch(Etudiant tocontact, Etudiant student, Reservation reservation, double[] matchingscores, EtudiantServices etudiantServices) {
+    public void sendemailtomatch(Etudiant tocontact, Etudiant student, Reservation reservation, List<Double> matchingscores, EtudiantServices etudiantServices) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(tocontact.getEmail());
         message.setSubject("Someone matched with you");
         StringBuilder text = new StringBuilder("Dear " + tocontact.getNomEt() + " " + tocontact.getPrenomEt() + ",\nYou have been matched with another student. \n \n");
-        if (matchingscores[0] == 1.0) {
+        if (matchingscores.get(0).equals(1.0)) {
             text.append("You are part of the same university \n");
         }
-        if (matchingscores[1] >= 0.66) {
+        if (matchingscores.get(1) >= 0.66) {
             Set<String> set1 = etudiantServices.splitInterests(student.getInterests());
             Set<String> set2 = etudiantServices.splitInterests(tocontact.getInterests());
             Set<String> similarinterests = etudiantServices.similarinterests(set1, set2);
@@ -75,7 +76,7 @@ public class EmailReservationService implements iEmailService {
                 text.append(interest).append("\n");
             }
         }
-        if (matchingscores[2] >= 0.75) {
+        if (matchingscores.get(2) >= 0.75) {
             text.append("Your academic performance is similar \n");
         }
         text.append("\n")

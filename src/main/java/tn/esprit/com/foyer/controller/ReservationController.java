@@ -12,6 +12,7 @@ import tn.esprit.com.foyer.services.ReservationServices;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -40,10 +41,20 @@ public class ReservationController {
     public ResponseEntity<?> addReservation(@RequestBody Map<String, Object> requestBody, @PathVariable(name = "idetud") Long idEtudiant, @PathVariable(name = "idchambre") Long idChambre,
                                             @PathVariable(name = "send") boolean send, @PathVariable(name = "matched") Long idmatch) {
         try {
-            List<Double> matchingScoresList = (List<Double>) requestBody.get("matchingScores");
-            double[] matchingScores = matchingScoresList.stream()
-                    .mapToDouble(Double::doubleValue)
-                    .toArray();
+            List<Object> rawMatchingScores = (List<Object>) requestBody.get("matchingScores");
+            List<Double> matchingScores = rawMatchingScores.stream()
+                    .map(score -> {
+                        if (score instanceof Integer) {
+                            return ((Integer) score).doubleValue();
+                        } else if (score instanceof Double) {
+                            return (Double) score;
+                        } else {
+                            // Handle other types or throw an exception if needed
+                            throw new IllegalArgumentException("Invalid score type: " + score.getClass().getSimpleName());
+                        }
+                    })
+                    .collect(Collectors.toList());
+
             ObjectMapper objectMapper = new ObjectMapper();
             Reservation reservation = objectMapper.convertValue(requestBody.get("reservation"), Reservation.class);
             reservation.setEstValide(false);
@@ -64,6 +75,11 @@ public class ReservationController {
     }
 
     // DELETE
+    @DeleteMapping("/delete/{reservation-id}")
+    public void deletestudentreserv(@PathVariable("reservation-id") Long reservationId) {
+        reservationServices.removeReservation(reservationId);
+    }
+
     @DeleteMapping("/delete-reservation/{reservation-id}")
     @PreAuthorize("hasAuthority('admin:delete')")
     public void deleteReservation(@PathVariable("reservation-id") Long reservationId) {

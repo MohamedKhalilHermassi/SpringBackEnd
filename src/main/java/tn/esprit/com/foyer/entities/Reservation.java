@@ -24,7 +24,7 @@ public class Reservation implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date anneeReservation;
     private boolean estValide;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Chambre chambre;
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Etudiant> etudiants;

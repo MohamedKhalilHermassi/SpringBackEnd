@@ -10,7 +10,7 @@ import java.util.List;
 public interface IReservationService {
     List<Reservation> retrieveAllReservation();
 
-    Reservation addReservation(Reservation reservation, Long idEtudiant, Long idChambre, boolean send, Long idmatched, double[] matchingscores);
+    Reservation addReservation(Reservation reservation, Long idEtudiant, Long idChambre, boolean send, Long idmatched, List<Double> matchingscores);
 
     long nbPlacesDisponibleParChambreAnneeEnCours(Chambre chambre, Date year);
 
@@ -24,6 +24,6 @@ public interface IReservationService {
 
     void validatereservation(long idreservation, long idstudent, String code);
 
-    void sendemailtomatch(long idmatched, Etudiant student, Reservation reservation, double[] matchingscores);
+    void sendemailtomatch(long idmatched, Etudiant student, Reservation reservation, List<Double> matchingscores);
 
 }

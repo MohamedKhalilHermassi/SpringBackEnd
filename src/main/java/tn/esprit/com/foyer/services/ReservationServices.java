@@ -33,7 +33,7 @@ public class ReservationServices implements IReservationService {
     }
 
     @Override
-    public Reservation addReservation(Reservation reservation, Long idEtudiant, Long idChambre, boolean send, Long idmatched, double[] matchingscores) {
+    public Reservation addReservation(Reservation reservation, Long idEtudiant, Long idChambre, boolean send, Long idmatched, List<Double> matchingscores) {
         Etudiant etudiant = etudiantRepository.findById(idEtudiant).orElse(null);
         Chambre roomtoreserve = chambreRepository.findById(idChambre).orElse(null);
         if (etudiant != null && roomtoreserve != null && nbPlacesDisponibleParChambreAnneeEnCours(roomtoreserve, reservation.getAnneeReservation()) > 0) {
@@ -82,7 +82,7 @@ public class ReservationServices implements IReservationService {
     }
 
     @Override
-    public void sendemailtomatch(long idmatched, Etudiant student, Reservation reservation, double[] matchingscores) {
+    public void sendemailtomatch(long idmatched, Etudiant student, Reservation reservation, List<Double> matchingscores) {
         Etudiant tocontact = etudiantRepository.findById(idmatched).get();
         // Sending email after successfully saving the reservation
         emailReservationService.sendemailtomatch(tocontact, student, reservation, matchingscores, etudiantServices);
