@@ -12,6 +12,7 @@ import tn.esprit.com.foyer.dto.blocDTO;
 import tn.esprit.com.foyer.dto.chambreDTO;
 import tn.esprit.com.foyer.entities.Bloc;
 import tn.esprit.com.foyer.entities.Chambre;
+import tn.esprit.com.foyer.entities.Reservation;
 import tn.esprit.com.foyer.repositories.BlocRepository;
 import tn.esprit.com.foyer.repositories.ChambreRepository;
 import tn.esprit.com.foyer.repositories.ReservationRepository;
@@ -91,12 +92,12 @@ public class ChambreServices implements IChambreService {
 
 
     public List<chambreDTO> getChambresBy_BlocId(Long blocId) {
-        List <chambreDTO> chambreDTOS =  new ArrayList<>() ;
-        List <Chambre> chambres  = new ArrayList<>() ;
-        chambres  = chambreRepository.getChambresByBloc_IdBloc(blocId);
-        chambreDTO chambreDTO= new chambreDTO( ) ;
-        blocDTO blocDTO = new blocDTO() ;
-        for (Chambre C:chambres
+        List<chambreDTO> chambreDTOS = new ArrayList<>();
+        List<Chambre> chambres = new ArrayList<>();
+        chambres = chambreRepository.getChambresByBloc_IdBloc(blocId);
+        chambreDTO chambreDTO = new chambreDTO();
+        blocDTO blocDTO = new blocDTO();
+        for (Chambre C : chambres
         ) {
 
             blocDTO.setIdBloc(C.getBloc().getIdBloc());
@@ -112,7 +113,7 @@ public class ChambreServices implements IChambreService {
             chambreDTOS.add(chambreDTO);
         }
 
-        return  chambreDTOS ;
+        return chambreDTOS;
 
     }
 
@@ -120,7 +121,7 @@ public class ChambreServices implements IChambreService {
     @Override
     public List<Chambre> retrieveAllChambre() {
 
-        return  chambreRepository.findAll() ;
+        return chambreRepository.findAll();
     }
     public boolean isNumeroChambreExists(Long numeroChambre) {
         return chambreRepository.existsByNumeroChambre(numeroChambre);
@@ -135,7 +136,7 @@ public class ChambreServices implements IChambreService {
     }
 
     @Override
-    public chambreDTO updateChambre(Long idChambre , Chambre c) {
+    public chambreDTO updateChambre(Long idChambre, Chambre c) {
 
 
         Chambre existingChambre = chambreRepository.findById(idChambre).get();
@@ -145,8 +146,8 @@ public class ChambreServices implements IChambreService {
 
         //DTO
 
-        chambreDTO chambreDTO= new chambreDTO( ) ;
-        blocDTO blocDTO = new blocDTO() ;
+        chambreDTO chambreDTO = new chambreDTO();
+        blocDTO blocDTO = new blocDTO();
         blocDTO.setIdBloc(existingChambre.getBloc().getIdBloc());
         blocDTO.setCapaciteBloc(existingChambre.getBloc().getCapaciteBloc());
         blocDTO.setNomBloc(existingChambre.getBloc().getNomBloc());
@@ -164,9 +165,9 @@ public class ChambreServices implements IChambreService {
 
     @Override
     public chambreDTO retrieveChambre(Long idChambre) {
-        Chambre C=chambreRepository.findById(idChambre).get();
-        chambreDTO chambreDTO= new chambreDTO( ) ;
-        blocDTO blocDTO = new blocDTO() ;
+        Chambre C = chambreRepository.findById(idChambre).get();
+        chambreDTO chambreDTO = new chambreDTO();
+        blocDTO blocDTO = new blocDTO();
         blocDTO.setIdBloc(C.getBloc().getIdBloc());
         blocDTO.setCapaciteBloc(C.getBloc().getCapaciteBloc());
         blocDTO.setNomBloc(C.getBloc().getNomBloc());
@@ -187,12 +188,10 @@ public class ChambreServices implements IChambreService {
         chambreRepository.deleteById(idChambre);
     }
 
-    public Bloc affecterChambresABloc(List<Long> numChambre, String nomBloc)
-    {
+    public Bloc affecterChambresABloc(List<Long> numChambre, String nomBloc) {
         Bloc b = blocRepository.findByNomBloc(nomBloc);
-        for(int i=0;i<numChambre.size();i++)
-        {
-            long k=  numChambre.get(i);
+        for (int i = 0; i < numChambre.size(); i++) {
+            long k = numChambre.get(i);
             System.out.println(k);
             Chambre ch = chambreRepository.findById(k).get();
             ch.setBloc(b);
@@ -284,8 +283,11 @@ public class ChambreServices implements IChambreService {
         }
     }
 
-
-
-
-
+    @Override
+    public Chambre affecterReservationAChambre(Long id, long idreserv) {
+        Chambre chambre = chambreRepository.findById(id).get();
+        Reservation reservation = reservationRepository.findReservationByIdReservation(idreserv);
+        chambre.getReservations().add(reservation);
+        return (chambreRepository.save(chambre));
+    }
 }

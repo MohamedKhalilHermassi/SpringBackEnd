@@ -15,4 +15,7 @@ public interface IChambreService {
     chambreDTO retrieveChambre(Long idChambre);
 
     void removeChambre(Long idChambre);
+
+    Chambre affecterReservationAChambre(Long id, long idreserv);
+
 }

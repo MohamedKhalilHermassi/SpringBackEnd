@@ -3,7 +3,6 @@ package tn.esprit.com.foyer.services;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.thymeleaf.context.Context;
 import tn.esprit.com.foyer.dto.ChangePasswordRequest;
 import tn.esprit.com.foyer.entities.User;

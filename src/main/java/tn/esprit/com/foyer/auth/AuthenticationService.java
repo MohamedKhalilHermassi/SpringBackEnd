@@ -6,14 +6,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tn.esprit.com.foyer.config.JwtService;
+import tn.esprit.com.foyer.entities.Etudiant;
 import tn.esprit.com.foyer.enums.Role;
 import tn.esprit.com.foyer.entities.User;
+import tn.esprit.com.foyer.repositories.EtudiantRepository;
 import tn.esprit.com.foyer.repositories.UserRepository;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final UserRepository userRepository;
+    private final EtudiantRepository etudiantRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -29,6 +32,15 @@ public class AuthenticationService {
                 .role(request.getRole())
                 .build();
         userRepository.save(user);
+        var etudiant = Etudiant.builder()
+                .nomEt(request.getFirstname())
+                .prenomEt(request.getLastname())
+                .cin(request.getCin())
+                .email(request.getEmail())
+                .ecole(request.getEcole())
+                .dateNaissance(request.getDateNaissance())
+                .build();
+        etudiantRepository.save(etudiant);
         var jwtToken = jwtService.generateToken(user);
         return AuthentificationResponse.builder()
                 .token(jwtToken)

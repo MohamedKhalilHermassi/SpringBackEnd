@@ -24,6 +24,8 @@ public class Bloc implements Serializable {
     private Long idBloc; // Clé primaire
     private String nomBloc;
     private Long capaciteBloc;
+
+
     @ManyToOne
     private Foyer foyer;
     @OneToMany(cascade = CascadeType.ALL, mappedBy="bloc")

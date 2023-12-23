@@ -1,5 +1,6 @@
 package tn.esprit.com.foyer.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -26,5 +27,6 @@ public class Chambre implements Serializable {
     @ManyToOne
     private Bloc bloc;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "chambre")
+    @JsonIgnore
     private Set<Reservation> reservations;
 }
